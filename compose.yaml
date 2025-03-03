@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  wordpress:
+    image: wordpress:6.3-php8.0
+    ports:
+      - 3040:80
+    volumes:
+      - ./wpgeek:/var/www/html/wp-content/themes/wp-geek
+      - ./html:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpressdb
+      WORDPRESS_DB_USER: wordpressuser
+      WORDPRESS_DB_PASSWORD: wordpresspass
+    restart: always
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wp
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wordpressuser
+      MYSQL_PASSWORD: wordpresspass
+    restart: always
+
+volumes:
+  db_data:
